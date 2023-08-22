@@ -1,0 +1,86 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2007.07.19.14.06.37;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Further work
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlnk_invitemcat.sql'
+ * Description:
+ *
+ *
+ * $Id: tlnk_invitemcat.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp nweeks $
+ *
+ * $Log: tlnk_invitemcat.sql,v $
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlnk_invitemcat.sql...' from rdb$database;
+
+/* --------------
+ * Inventory :: Item to Categories Link Table
+ *
+ * The grouping of similar items
+ * --------------
+ */
+
+
+select 'Linking DNA tlnk_invitemcat' from rdb$database;
+
+
+CREATE TABLE tlnk_invitemcat (
+  int_itemid INTEGER NOT NULL,
+  int_catid INTEGER NOT NULL,
+    PRIMARY KEY(int_itemid, int_catid),
+    FOREIGN KEY(int_catid) REFERENCES tlkp_invcategory (int_catid),
+    FOREIGN KEY(int_itemid) REFERENCES tbl_invitem (int_itemid)
+);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 5
+a12 1
+ * $Id$
+a13 1
+ * $Log$
+d28 1
+a28 1
+select 'Linking DNA tlkp_invitemcat' from rdb$database;
+d31 2
+a32 2
+CREATE TABLE tlkp_invitemcat (
+  itn_itemid INTEGER NOT NULL,
+@

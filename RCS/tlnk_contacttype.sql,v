@@ -1,0 +1,50 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlnk_contacttype.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlnk_contacttype.sql...' from rdb$database;
+
+select 'Linking DNA tbl_ ' from rdb$database;
+
+CREATE TABLE tlnk_contacttype (
+  int_contacttypeid INTEGER NOT NULL,
+  int_contactid INTEGER NOT NULL,
+    PRIMARY KEY(int_contacttypeid,int_contactid),
+    FOREIGN KEY(int_contacttypeid) REFERENCES tlkp_contacttype(int_contacttypeid),
+    FOREIGN KEY(int_contactid) REFERENCES tbl_contact(int_contactid)
+);
+
+@

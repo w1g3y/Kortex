@@ -1,0 +1,55 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_invitemtype.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_invitemtype.sql...' from rdb$database;
+
+/* --------------
+ * Inventory :: Item Types (Bike, Part, etc)
+ *
+ * --------------
+ */
+select 'Linking DNA tlkp_invitemtype' from rdb$database;
+
+
+CREATE TABLE tlkp_invitemtype (
+  int_typeid INTEGER NOT NULL,
+  str_type VARCHAR(32),
+  str_desc VARCHAR(128),
+    PRIMARY KEY(int_typeid)
+);
+CREATE GENERATOR GEN_TLKP_INVITEMTYPE;
+@

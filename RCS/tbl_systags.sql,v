@@ -1,0 +1,57 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_systags.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_systags.sql...' from rdb$database;
+
+select 'Linking DNA tbl_systags' from rdb$database;
+
+/* --- Systags ---
+ * System tags are included at the template level, not the page level
+ * As a result, they provide consistency across all pages
+ */
+CREATE TABLE tbl_systags (
+  int_systagid INTEGER NOT NULL,
+  str_tagname VARCHAR(32),
+  str_lang VARCHAR(2) DEFAULT 'en', /* just incase we supply different systags for different langs */
+  str_valuetype VARCHAR(16),
+  blb_data BLOB SUB_TYPE TEXT,
+  int_order INTEGER,  /* In case dependencies arise */
+    PRIMARY KEY(int_systagid)
+);
+CREATE GENERATOR GEN_TBL_SYSTAGS;
+
+@

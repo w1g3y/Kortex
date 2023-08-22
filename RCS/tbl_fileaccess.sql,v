@@ -1,0 +1,75 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2011.06.22.01.31.57;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@made changes to global file repo
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_fileaccess.sql'
+ * Description:
+ *
+ *
+ * $Id: tbl_fileaccess.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+ *
+ * $Log: tbl_fileaccess.sql,v $
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_fileaccess.sql...' from rdb$database;
+
+select 'Linking DNA tbl_fileaccess' from rdb$database;
+
+CREATE TABLE tbl_fileaccess (
+  int_accessid BIGINT NOT NULL,
+  int_fileid BIGINT NOT NULL, 
+  dtm_stamp TIMESTAMP DEFAULT 'not' NOT NULL,
+  str_ipaddr VARCHAR(32),
+    PRIMARY KEY(int_accessid)
+);
+CREATE GENERATOR GEN_TBL_FILEACCESS;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 5
+a12 1
+ * $Id$
+a13 1
+ * $Log$
+d23 2
+a24 2
+  int_accessid INTEGER NOT NULL,
+  int_fileid INTEGER NOT NULL, 
+@

@@ -1,0 +1,81 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2011.06.22.01.29.32;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@rough maintenance task table
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@frequency: 5000 UOM (UnitOfMeasure(Hours))
+
+reset type:generation, completion
+schedult type
+status required
+tolerance
+
+work order
+work type
+wection
+reference
+responsibility
+peiority
+est duratino
+est downtime
+start ttime
+activvities
+carryover text
+
+included tasks
+task 1
+task 2
+task 3
+task 4
+
+items required
+Kit code
+part 1
+part 2
+toolS
+drawing
+drawing ref
+
+
+Task Description
+
+
+Labout Require
+ments
+code:description:Persons:Est. Total Hours:::Est. Next Due
+
+
+
+
+References:
+work orders
+workj reauests
+cost history
+attached
+safety notes
+History Notes
+Materials
+Monitors
+MPM List
+Audit
+
+@

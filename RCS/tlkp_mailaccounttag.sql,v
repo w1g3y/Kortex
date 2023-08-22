@@ -1,0 +1,54 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_mailaccounttag.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_mailaccounttag.sql...' from rdb$database;
+
+select 'Linking DNA tlkp_mailaccounttag' from rdb$database;
+
+create table tlkp_mailaccounttag (
+  int_tagid INTEGER NOT NULL,
+  str_tag VARCHAR(64) NOT NULL,
+  str_group VARCHAR(16), /* Group related tags together */
+  str_type VARCHAR(16) default 'text' NOT NULL
+  str_default VARCHAR(64),
+  str_help VARCHAR(256),
+  int_order INTEGER,  /* Helps layout the configuration screens */
+    PRIMARY KEY(int_tagid)
+);
+CREATE GENERATOR GEN_TLKP_MAILACCOUNTTAG;
+CREATE INDEX IND_MAILACCTAG_TAG ON tlkp_mailaccounttag(str_tag);
+@

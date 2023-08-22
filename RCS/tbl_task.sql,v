@@ -1,0 +1,171 @@
+head	1.5;
+access;
+symbols;
+locks
+	nweeks:1.5; strict;
+comment	@# @;
+
+
+1.5
+date	2012.11.30.00.07.59;	author nweeks;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2012.11.29.23.58.54;	author nweeks;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2011.06.22.01.33.25;	author nweeks;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.07.01.03.22.37;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.08.31.07.01.18;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@This is the task entity that gets scheduled
+@
+
+
+1.5
+log
+@Added Task hierarchy (gantt) controls
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_task.sql'
+ * Description:
+ *
+ *
+ * $Id: tbl_task.sql,v 1.4 2012/11/29 23:58:54 nweeks Exp nweeks $
+ *
+ * $Log: tbl_task.sql,v $
+ * Revision 1.4  2012/11/29 23:58:54  nweeks
+ * iAdded project linkage
+ *
+ * Revision 1.3  2011/06/22 01:33:25  nweeks
+ * BigInt upgrade
+ *
+ * Revision 1.2  2008/07/01 03:22:37  nweeks
+ * General Checkin
+ *
+ * Revision 1.1  2007/08/31 07:01:18  nweeks
+ * Initial revision
+ *
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_task.sql...' from rdb$database;
+
+
+CREATE TABLE tbl_task (
+  int_taskid BIGINT NOT NULL,
+  int_projectid BIGINT,
+  int_createdby INTEGER,
+  int_createdfor INTEGER,
+  str_name VARCHAR(100) NOT NULL,
+  str_calltype VARCHAR(40),
+  str_department VARCHAR(300),
+  blb_desc BLOB SUB_TYPE TEXT ,
+  int_priorityid INTEGER default 1 NOT NULL /*  */
+  dtm_created TIMESTAMP default 'now',
+  dtm_edited TIMESTAMP default 'now',
+  int_complete INTEGER, /* 0-100% */
+  int_contactid INTEGER,
+  int_previoustaskid BIGINT,   /* Handles when this task can start (gantt) */
+  int_previousflagid INTEGER,  /* Prev.started, Prev.complete, etc)
+    PRIMARY KEY(int_taskid),
+    FOREIGN KEY(int_createdby) REFERENCES tbl_user(int_userid),
+    FOREIGN KEY(int_createdfor) REFERENCES tbl_user(int_userid),
+    FOREIGN KEY(int_contactid) REFERENCES tbl_contact(int_contactid),
+    FOREIGN KEY(int_projectid) REFERENCES tbl_project(int_projectid),
+    FOREIGN KEY(int_priorityid) REFERENCES tlkp_listchoices(int_listid)
+    FOREIGN KEY(int_previoustaskid) REFERENCES tbl_task(int_taskid),
+    FOREIGN KEY(int_previousflagid) REFERENCES tlkp_listchoices(int_listid)
+);
+CREATE GENERATOR GEN_TBL_TASK;
+
+
+@
+
+
+1.4
+log
+@iAdded project linkage
+@
+text
+@d8 1
+a8 1
+ * $Id: tbl_task.sql,v 1.3 2011/06/22 01:33:25 nweeks Exp nweeks $
+d11 3
+d45 2
+d52 3
+a54 1
+    FOREIGN KEY(int_priorityid) REFERENCES tlkp_priority(int_priorityid)
+@
+
+
+1.3
+log
+@BigInt upgrade
+@
+text
+@d8 1
+a8 1
+ * $Id: tbl_task.sql,v 1.2 2008/07/01 03:22:37 nweeks Exp $
+d11 3
+d30 1
+d46 1
+@
+
+
+1.2
+log
+@General Checkin
+@
+text
+@d8 1
+a8 1
+ * $Id: tbl_task.sql,v 1.1 2007/08/31 07:01:18 nweeks Exp $
+d11 3
+d26 1
+a26 1
+  int_taskid NUMERIC(18,0) NOT NULL,
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 1
+a8 1
+ * $Id: tbl_task.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+d11 3
+d24 2
+a25 2
+  int_createdby NUMERIC(18,0),
+  int_createdfor NUMERIC(18,0),
+d30 1
+a30 1
+  int_priority INTEGER default 1 NOT NULL, /*0:low,1:med,2:high */
+d34 1
+d37 3
+a39 1
+    FOREIGN KEY(int_createdfor) REFERENCES tbl_user(int_userid)
+@

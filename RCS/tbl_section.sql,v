@@ -1,0 +1,56 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_section.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_section.sql...' from rdb$database;
+
+select 'Linking DNA tbl_section' from rdb$database;
+
+/* --- Section Table --- */
+CREATE TABLE tbl_section (
+  int_sectionid INTEGER NOT NULL,
+  str_name VARCHAR(64) NOT NULL,
+  str_code VARCHAR(32),
+  int_order INTEGER,
+    PRIMARY KEY(int_sectionid),
+    UNIQUE(str_name)
+);
+CREATE GENERATOR GEN_TBL_SECTION;
+
+
+
+
+@

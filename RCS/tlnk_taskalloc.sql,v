@@ -1,0 +1,78 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2011.06.22.01.33.25;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.08.31.07.01.18;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@This is how tasks get allocated to people.
+@
+
+
+1.2
+log
+@BigInt Upgrade
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlnk_taskalloc.sql'
+ * Description:
+ *
+ *
+ * $Id: tlnk_taskalloc.sql,v 1.1 2007/08/31 07:01:18 nweeks Exp $
+ *
+ * $Log: tlnk_taskalloc.sql,v $
+ * Revision 1.1  2007/08/31 07:01:18  nweeks
+ * Initial revision
+ *
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlnk_taskalloc.sql...' from rdb$database;
+
+select 'Linking DNA tlnk_taskalloc ' from rdb$database;
+
+CREATE TABLE tlnk_taskalloc (
+  int_taskid BIGINT NOT NULL,
+  int_userid BIGINT NOT NULL,
+  dtm_alloc TIMESTAMP,
+    PRIMARY KEY(int_taskid,int_userid),
+    FOREIGN KEY(int_taskid) references tbl_task(int_taskid) ON UPDATE CASCADE,
+    FOREIGN KEY(int_userid) references tbl_user(int_userid) ON UPDATE CASCADE
+);
+
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 1
+a8 1
+ * $Id: tlnk_taskalloc.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+d11 3
+d24 2
+a25 2
+  int_taskid NUMERIC(18,0) NOT NULL,
+  int_userid NUMERIC(18,0) NOT NULL,
+@

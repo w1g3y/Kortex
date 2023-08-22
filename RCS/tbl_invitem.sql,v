@@ -1,0 +1,115 @@
+head	1.3;
+access;
+symbols;
+locks
+	nweeks:1.3; strict;
+comment	@# @;
+
+
+1.3
+date	2008.09.09.01.04.34;	author nweeks;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.07.01.03.22.37;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_invitem.sql'
+ * Description:
+ *
+ *
+ * $Id: tbl_invitem.sql,v 1.2 2008/07/01 03:22:37 nweeks Exp nweeks $
+ *
+ * $Log: tbl_invitem.sql,v $
+ * Revision 1.2  2008/07/01 03:22:37  nweeks
+ * General Checkin
+ *
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_invitem.sql...' from rdb$database;
+
+/* --------------
+ * Inventory :: Item table
+ *
+ * Flexible descriptions, ownership, and extendible tags/categories
+ * --------------
+ */
+
+select 'Linking DNA tbl_invitem' from rdb$database;
+
+CREATE TABLE tbl_invitem (
+  int_itemid INTEGER NOT NULL,
+  int_typeid INTEGER NOT NULL,
+  str_name VARCHAR(64) NOT NULL,
+  str_desc VARCHAR(512),
+  int_ownerid INTEGER,
+  int_modelid INTEGER,
+  int_manufid INTEGER,
+  int_upcbarcode INTEGER,
+  str_3of9barcode VARCHAR(32),
+    PRIMARY KEY(int_itemid),
+    FOREIGN KEY(int_ownerid) REFERENCES tbl_user(int_userid),
+    FOREIGN KEY(int_typeid) REFERENCES tlkp_invitemtype(int_typeid),
+    FOREIGN KEY(int_modelid, int_manufid) REFERENCES tlkp_invmanufmodel (int_modelid, int_manufid)
+);
+CREATE GENERATOR GEN_TBL_INVITEM;
+
+
+
+ 
+@
+
+
+1.2
+log
+@General Checkin
+@
+text
+@d8 1
+a8 1
+ * $Id: tbl_invitem.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+d11 3
+d40 2
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 5
+a12 1
+ * $Id$
+a13 1
+ * $Log$
+d35 2
+d39 2
+a40 1
+    FOREIGN KEY(int_typeid) REFERENCES tlkp_invitemtype(int_typeid)
+@

@@ -1,0 +1,63 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2011.06.22.01.29.23;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@Config storage table
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@/* =================================================
+ *
+ * Entity Name: 'tbl_config.sql'
+ * Description:
+ *
+ *
+ * $Id: tbl_config.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+ *
+ * $Log: tbl_config.sql,v $
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_config.sql...' from rdb$database;
+
+select 'Linking DNA tbl_config' from rdb$database;
+
+/* --- Systags ---
+ * System tags are included at the template level, not the page level
+ * As a result, they provide consistency across all pages
+ */
+CREATE TABLE TBL_CONFIG (
+  int_configid BIGINT NOT NULL,
+  str_cfggrp VARCHAR(64) NOT NULL,
+  int_cfggrpord INTEGER DEFAULT 0 NOT NULL,
+  str_cfgsubgrp VARCHAR(64) NOT NULL,
+  int_cfggrpsubord INTEGER DEFAULT 0 NOT NULL,
+  STR_VALUE VARCHAR(256),
+  str_desc VARCHAR(2048),
+  str_valtype varchar(1) default 'T'
+    PRIMARY KEY (INT_int_configid),
+
+);
+CREATE GENERATOR GEN_TBL_CONFIG;
+
+@

@@ -1,0 +1,458 @@
+/* mod_finance
+# Keep this completely UNLIKE another financials package we know about
+# $Id: modfinance.sql,v 1.14 2005/03/16 23:39:27 nweeks Exp nweeks $
+#
+# $Log: modfinance.sql,v $
+# Revision 1.14  2005/03/16 23:39:27  nweeks
+# Added Multi-till currency support, and fixed a few typos
+#
+# Revision 1.13  2005/03/01 02:04:15  nweeks
+# Multi-currency support in the making...
+#
+# Revision 1.12  2004/12/23 06:15:43  nweeks
+# Seperated Inventory out from Logistics
+#
+# Revision 1.11  2004/07/11 23:04:07  nigel
+# Rolled out new boolean type (ibl_)
+#
+# Revision 1.10  2004/07/09 00:03:35  nigel
+# Put a generator on accounts table(DUH!)
+#
+# Revision 1.9  2004/07/08 23:57:11  nigel
+# At last, found the error. int_site, not int_siteid.
+# Now, I can sleep...
+#
+# Revision 1.8  2004/07/08 23:54:11  nigel
+# Fixed nulls on Indexes
+#
+# Revision 1.7  2004/07/08 23:52:08  nigel
+# Fixed indexed column widths
+#
+# Revision 1.6  2004/07/08 23:47:08  nigel
+# Put unique indexes on transtype and account type(for searching)
+#
+# Revision 1.5  2004/01/19 01:56:56  nigel
+# Changes most FK lookups to 64bit Integers.
+#
+# Revision 1.4  2004/01/13 01:31:28  nigel
+# Added the Foreign Keys to the transaction table, to glue it
+# into the rest of OA
+#
+# Revision 1.3  2004/01/13 01:15:12  nigel
+# Added a few foreign keys, and a unique check on tlkp_linkcode
+#
+# Revision 1.2  2004/01/13 00:31:21  nigel
+# Added transtype and acctype lookups
+#
+# Revision 1.1  2004/01/13 00:17:54  nigel
+# Initial revision
+#
+#
+*/
+
+/* ============
+Lookup Tables
+============ */
+
+/* This stores the types of links we can have between transactions
+*/
+select 'Link Codes for connecting Transactions (mfin_tlkp_linkcode)' from rdb$database;
+CREATE TABLE mfin_tlkp_linkcode (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_linkcodeid BIGINT NOT NULL,
+  str_name VARCHAR(20) NOT NULL,
+  str_desc VARCHAR(200),
+    PRIMARY KEY(int_siteid, int_linkcodeid),
+    UNIQUE(int_siteid, str_name)
+);
+CREATE GENERATOR GEN_MFIN_TLKP_LINKCODE;
+INSERT INTO mfin_tlkp_linkcode (int_siteid, int_linkcode, str_name, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_linkcode,1),'Tax Posting','Tax component of the transaction');
+INSERT INTO mfin_tlkp_linkcode (int_siteid, int_linkcode, str_name, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_linkcode,1),'Debtors Posting','Amount posted to Debtors Account');
+INSERT INTO mfin_tlkp_linkcode (int_siteid, int_linkcode, str_name, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_linkcode,1),'Creditors Posting','Amount posted to Creditors Account');
+INSERT INTO mfin_tlkp_linkcode (int_siteid, int_linkcode, str_name, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_linkcode,1),'Activity Posting','Amount posted to an ERP.Activity(job)');
+INSERT INTO mfin_tlkp_linkcode (int_siteid, int_linkcode, str_name, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_linkcode,1),'BOM Posting','Amount for Bill-of-Materials posting');
+
+SET GENERATOR GEN_MFIN_TLKP_LINKCODE to 1000;
+
+
+/* This stores the types of accounts we can have
+*/
+select 'Account Type Lookup (mfin_tlkp_acctype)' from rdb$database;
+CREATE TABLE mfin_tlkp_acctype (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_atypeid BIGINT NOT NULL,
+  str_desc VARCHAR(60) NOT NULL,
+    PRIMARY KEY(int_siteid, int_atypeid),
+    UNIQUE (int_siteid, str_desc)
+);
+CREATE GENERATOR GEN_MFIN_TLKP_ACCTYPE;
+INSERT INTO mfin_tlkp_acctype (int_siteid, int_typeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_acctype,1),'Income Account');
+INSERT INTO mfin_tlkp_acctype (int_siteid, int_typeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_acctype,1),'Expense Account');
+INSERT INTO mfin_tlkp_acctype (int_siteid, int_typeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_acctype,1),'Tax Account');
+INSERT INTO mfin_tlkp_acctype (int_siteid, int_typeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_acctype,1),'Asset Account');
+INSERT INTO mfin_tlkp_acctype (int_siteid, int_typeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_acctype,1),'Liability Account');
+INSERT INTO mfin_tlkp_acctype (int_siteid, int_typeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_acctype,1),'Equity Account');
+INSERT INTO mfin_tlkp_acctype (int_siteid, int_typeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_acctype,1),'Shrinkage Account');
+INSERT INTO mfin_tlkp_acctype (int_siteid, int_typeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_acctype,1),'Rollover Account');
+INSERT INTO mfin_tlkp_acctype (int_siteid, int_typeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_acctype,1),'Inventory Account');
+
+SET GENERATOR GEN_MFIN_TLKP_ACCTYPE TO 1000;
+
+/* This stores the types of currencies we support
+*/
+CREATE TABLE mfin_tlkp_currency (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_currencyid BIGINT NOT NULL,
+  str_name VARCHAR(100),
+  str_desc VARCHAR(1000),
+    PRIMARY KEY(int_siteid, int_currency),
+    unique(int_siteid, str_name)
+);
+CREATE GENERATOR gen_mfin_tlkp_currency;
+
+
+
+/* This stores the types of transactions we can have
+*/
+select 'Transaction Types Lookup (mfin_tlkp_transtype)' from rdb$database;
+CREATE TABLE mfin_tlkp_transtype (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_ttypeid BIGINT NOT NULL,
+  str_desc VARCHAR(60) NOT NULL,
+    PRIMARY KEY(int_siteid, int_ttypeid),
+    UNIQUE (int_siteid, str_desc)
+);
+CREATE GENERATOR GEN_MFIN_TLKP_TRANSTYPE;
+
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Purchase');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Purchase Order');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Purchase Return');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Sale Invoice');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Sale Order');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Sale Return');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Payment');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Quote');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Rental');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Time Charge');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Freight Charge');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Manufacture Item');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Journal');
+INSERT INTO mfin_tlkp_transtype (int_siteid, int_ttypeid, str_desc)
+VALUES (1,gen_id(gen_mfin_tlkp_transtype,1),'Inventory Adjustment');
+
+SET GENERATOR GEN_MFIN_TLKP_TRANSTYPE TO 1000;
+
+/* Tax Types lookup table
+*/
+select 'Tax Types Lookup (mfin_tlkp_taxtype)' from rdb$database;
+CREATE TABLE mfin_tlkp_taxtype (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  str_taxtype VARCHAR(15) NOT NULL,
+  str_desc VARCHAR(100),
+  flt_lothresh NUMERIC(18,2), /* Lower threshold of this tax */
+  flt_pcthresh NUMERIC(18,2), /* The tax calculation percentage */
+  flt_hithresh NUMERIC(18,2), /* Upper threshold of thix tax */
+    PRIMARY KEY(int_siteid, str_taxtype)
+);
+
+/* ==========
+Base Tables
+========== */
+
+/* Currency Value Table 
+ * We store the currency, a timestamp of the value change
+ * compared to our system currency, and the multiplication factor
+ */
+select 'Currency Value Table (mfin_tbl_currvalue)' from rdb$database;
+CREATE TABLE mfin_tbl_currvalue (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_currencyid BIGINT NOT NULL,
+  dtm_adjustment TIMESTAMP default 'now' NOT NULL,
+  flt_factor NUMERIC(18,4) NOT NULL,
+    PRIMARY KEY(int_siteid, int_currencyid, dtm_adjustment),
+    FOREIGN KEY(int_siteid, int_currencyid) REFERENCES mfin_tlkp_currency(int_siteid, int_currencyid) ON UPDATE CASCADE
+);
+
+
+/* =============
+Cash Drawer Table
+In order to handle multiple currencies in a till, we use 'virtual' cashdrawers - primary keyed to a currency.
+That way, balancing a till at end-of-business is a whole lot easier
+(Multi-till framework inspired by Sean Costain)
+============= */
+select 'Cash Drawer (mfin_tbl_cashdrawer)' from rdb$database;
+CREATE TABLE mfin_tbl_cashdrawer (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_drawerid BIGINT NOT NULL,
+  int_currencyid bigint NOT NULL,
+  str_name VARCHAR(20), /* Give the drawer a name if you want */
+  dtm_balance TIMESTAMP default 'now' NOT NULL, /* Balance at this time */
+  flt_balance NUMERIC(18,2) default 0 NOT NULL, /* The actual balance */
+    PRIMARY KEY(int_siteid, int_drawerid, int_currencyid, dtm_balance)
+);
+CREATE GENERATOR GEN_MFIN_TBL_CASHDRAWER;
+
+
+
+/* Account Table
+ * Stores a rolling balance for an account, and is
+ * influenced by transactions in accordance to rules
+ * in the slicing table
+ */
+select 'Base Account Table (mfin_tbl_account)' from rdb$database;
+CREATE TABLE mfin_tbl_account (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_accountid BIGINT NOT NULL,
+  str_code VARCHAR(20) NOT NULL,
+  str_name VARCHAR(40),
+  str_desc VARCHAR(100),
+  int_atypeid BIGINT NOT NULL, /* What type of account is this */
+  flt_balance NUMERIC(18,2), /* Balance is always in the default currency */
+    PRIMARY KEY(int_siteid, int_accountid),
+    FOREIGN KEY(int_siteid, int_atypeid) 
+      REFERENCES mfin_tlkp_acctype (int_siteid, int_atypeid) 
+      ON UPDATE CASCADE
+);
+CREATE GENERATOR GEN_MFIN_TBL_ACCOUNT;
+
+
+select 'Base Transaction Table (mfin_tbl_trans)' from rdb$database;
+/* This stores the transactions themselves 
+ * To handle multi-currency:
+ * When a transaction arrives, a before-insert trigger fires, which examines the incoming int_incurrency, looks up the current exchange rate from mfin_tbl_currvalue, and converts the value to the internal storage currency.
+ * If we ever need to reverse engineer the value coming in, simply look up the value in currvalue, and apply in the reverse direction
+ * 
+ * An after insert/update, and a before delete trigger process transactions
+ * according to rules in the slicing table
+ */
+
+
+CREATE TABLE mfin_tbl_trans (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_transid BIGINT NOT NULL,
+  dtm_ttime TIME DEFAULT 'now' NOT NULL, /* Transaction Time */
+  dtm_tdate DATE DEFAULT 'now' NOT NULL, /* Transaction Date */
+  dtm_tstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Real trans timestamp */
+  str_inunit VARCHAR(8) DEFAULT 'CURRENCY' NOT NULL, /* Currency, Unit, Hour */
+  int_incurrency BIGINT NOT NULL, /* The currency we started with */
+  int_accountid BIGINT NOT NULL,
+  int_contact BIGINT,		/* the mod_crm customer/supplier */
+  int_item BIGINT,		/* from mod_logi */
+  int_asset BIGINT,		/* from mod_asset */
+  int_resource BIGINT,		/* from mod_erp */
+  flt_qty NUMERIC(18,4),                /* Quantity (Hours/Units/etc) */
+  flt_ordered NUMERIC(18,4),		/* qty ordered */
+  flt_hold NUMERIC(18,4),		/* qty on hold */
+  flt_shipped NUMERIC(18,4),		/* qty shipped */
+  flt_delivered NUMERIC(18,4),		/* qty delivered */
+  flt_accepted NUMERIC(18,4),		/* qty accepted as ok */
+  flt_amount NUMERIC(18,2),		/* Dollar amount of transaction */
+  int_ttypeid BIGINT NOT NULL,	/* Purchase/Sale/etc */
+    PRIMARY KEY(int_siteid, int_transid),
+    FOREIGN KEY(int_siteid, int_ttypeid) 
+      REFERENCES mfin_tlkp_transtype (int_siteid, int_ttypeid) 
+      ON UPDATE CASCADE,
+    FOREIGN KEY(int_siteid, int_accountid) 
+      REFERENCES mfin_tbl_account (int_siteid, int_accountid) 
+      ON UPDATE CASCADE,
+    FOREIGN KEY(int_siteid, int_contact) 
+      REFERENCES mcrm_tbl_contact (int_siteid, int_contact) 
+      ON UPDATE CASCADE,
+    FOREIGN KEY(int_siteid, int_item) 
+      REFERENCES minv_tbl_item (int_siteid, int_itemid) 
+      ON UPDATE CASCADE,
+    FOREIGN KEY(int_siteid, int_asset) 
+      REFERENCES mass_tbl_asset (int_siteid, int_asset) 
+      ON UPDATE CASCADE,
+    FOREIGN KEY(int_siteid, int_resource) 
+      REFERENCES mhrm_tbl_resource (int_siteid, int_resid) 
+      ON UPDATE CASCADE,
+    FOREIGN KEY(int_siteid, int_incurrency) 
+      REFERENCES mfin_tlkp_currency (int_siteid, int_currency) 
+      ON UPDATE CASCADE
+);
+CREATE GENERATOR GEN_MFIN_TBL_TRANS;
+
+
+
+/* Transaction Slice Table
+ * This table stores what percentage of a transaction is posted to which accounts, depending
+ * on transaction type, tax calculation, and amount
+ * Also, a 'Slicing Label' can be used to redirect amounts to alternative locations
+ * Tax can be sliced off at any rate, to any account
+ * Postings to Cost of Sales, Inventory, etc can be infinitely adjusted
+ * This should allow portability to any country's tax system
+ * For example: A sale of $11 tax inclusive comes in:
+ *   10% of the transamt goes to the tax-received account, and 
+ *     this amount is taken off the transamt(the transamt was Tax Inclusive)
+ *   100% of the Tax-Ex TransAmt is posted +ve to the Income account
+ *   100% of the Tax-Ex TransAmt is posted -ve to the Trade Debtors account
+ *   100% of the stock/service value is posted -ve to the Inventory account
+ *   100% of the stock/service value is posted +ve to the Cost of Sales account
+ */
+CREATE TABLE mfin_tbl_transslice (
+  int_siteid INTEGER DEFAULT 1 NOT NULL,
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_tsliceid BIGINT NOT NULL,
+  str_label VARCHAR(100), /* Slicing Label */
+  str_group VARCHAR(200), /* Slicing Group: General Sales, etc */
+  int_usewhichamt INTEGER, /* Which value to use for calc: 0:TransAmt, 1:Stock Value, 2:Service Value */
+  int_transtype BIGINT NOT NULL, /* References mfin_tlkp_transtype.int_typeid */
+  str_taxcalc VARCHAR(3) DEFAULT 'EXC' NOT NULL, /* EXC:Exclusive,INC:Inclusive,ACT:Actual,FRE:Free */
+  int_taxtype BIGINT, /* References mfin_tlkp_taxtype.int_typeid */
+  flt_calc NUMERIC(18,6), /* Big number, with 6 places of precision. Multiplied against transamt */
+  int_destacc BIGINT, /* References mfin_tbl_account.int_account */
+  int_adjtransamt INTEGER, /* Do we then use this calculated value to adjust the incoming transaction amount? ie take tax out if it's an inclusive transaction */
+    PRIMARY KEY(int_siteid, int_tsliceid),
+    UNIQUE (int_siteid, int_transtype, str_taxcalc, int_taxtype, int_adjtransamt)
+);
+CREATE GENERATOR GEN_MFIN_TBL_TRANSSLICE;
+
+
+/* Within projects, it's nice to have proportions of transaction amounts split into
+ * seperate accounts, to cover/track expenditure, etc.
+ * Here, we store the name of the Job, the 'Split Set', and any percentages
+ * Really, this is very similar to the above table - I wonder if I can consolidate them...
+*/
+
+
+  
+
+
+
+/* ============
+Link Tables
+============ */
+
+/* mfin_tlnk_trans
+Allow linking of related transactions together.
+This allows:
+seperate tax transactions for a sale transaction
+a payment transaction against an invoice
+etc.
+*/
+select 'Transaction Link Table (mfin_tlnk_trans)' from rdb$database;
+CREATE TABLE mfin_tlnk_trans (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_ptransid BIGINT NOT NULL, /* The Parent Transid */
+  int_ctransid BIGINT NOT NULL, /* The Child Transid */
+  int_linkcode BIGINT NOT NULL, /* What this child link(Tax/journal/other) */
+    PRIMARY KEY(int_siteid, int_ptransid, int_ctransid),
+    FOREIGN KEY(int_siteid, int_linkcode) 
+      REFERENCES mfin_tlkp_linkcode (int_siteid, int_linkcode) 
+      ON UPDATE CASCADE,
+    FOREIGN KEY(int_siteid, int_ptransid)
+      REFERENCES mfin_tbl_trans (int_siteid, int_transid)
+      ON UPDATE CASCADE,
+    FOREIGN KEY(int_siteid, int_ctransid)
+      REFERENCES mfin_tbl_trans (int_siteid, int_transid)
+      ON UPDATE CASCADE
+);
+
+
+/* mfin_tlnk_transdeliv
+  Delivery details for a transaction might differ from CRM.contact's default,
+  or may differ from transaction to transaction
+  Store any changes from the norm here.
+*/
+select 'Transaction Delivery Link Table (mfin_tlnk_transdeliv)' from rdb$database;
+CREATE TABLE mfin_tlnk_transdeliv (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_transid BIGINT NOT NULL,
+  ibl_addroverride INTEGER, /* Use the following address info to override any presets */
+  str_address VARCHAR(200),
+  str_suburb VARCHAR(50),
+  str_city VARCHAR(50),
+  str_state VARCHAR(50),
+  str_country VARCHAR(100),
+  str_postcode VARCHAR(10),
+    PRIMARY KEY(int_siteid, int_transid),
+    FOREIGN KEY(int_siteid, int_transid)
+      REFERENCES mfin_tbl_trans (int_siteid, int_transid)
+      ON UPDATE CASCADE
+);
+
+
+
+/* mfin_tlnk_item_regprc
+Links a price to an item, dependent on location
+*/
+select 'Stock Item Price (mfin_tlnk_itemregprc)' from rdb$database;
+CREATE TABLE mfin_tlnk_itemregprc (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_item BIGINT NOT NULL,
+  int_region BIGINT NOT NULL,
+  flt_price NUMERIC(18,2) NOT NULL,
+    PRIMARY KEY(int_siteid, int_item, int_region),
+    FOREIGN KEY(int_siteid, int_item) 
+      REFERENCES minv_tbl_item (int_siteid, int_itemid) 
+      ON UPDATE CASCADE,
+    FOREIGN KEY (int_siteid, int_region)
+      REFERENCES mcrm_tlkp_region (int_siteid, int_region)
+      ON UPDATE CASCADE
+);
+
+CREATE GENERATOR GEN_mfin_tlnk_itemregprc;
+
+
+/* mfin_tlnk_itemcontprc
+Links a price to a contact, and the type of transaction is suits
+*/
+select 'Stock Item Price (mfin_tlnk_itemcontprc)' from rdb$database;
+CREATE TABLE mfin_tlnk_itemcontprc (
+  int_siteid INTEGER NOT NULL,  /* Replication Support */
+  dtm_rstamp TIMESTAMP DEFAULT 'now' NOT NULL, /* Replication Stamp */
+  int_itemid BIGINT NOT NULL,
+  int_contactid BIGINT NOT NULL,
+  int_ttypeid BIGINT NOT NULL,
+    PRIMARY KEY(int_siteid, int_item, int_contact, int_typeid),
+    FOREIGN KEY(int_siteid, int_item) 
+      REFERENCES minv_tbl_item (int_siteid, int_itemid) 
+      ON UPDATE CASCADE,
+    FOREIGN KEY (int_siteid, int_contactid)
+      REFERENCES mcrm_tbl_contact (int_siteid, int_contactid)
+      ON UPDATE CASCADE,
+    FOREIGN KEY(int_siteid, int_ttypeid) 
+      REFERENCES mfin_tlkp_transtype (int_siteid, int_ttypeid) 
+      ON UPDATE CASCADE
+);
+  

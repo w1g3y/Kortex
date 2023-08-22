@@ -1,0 +1,51 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2008.07.01.03.22.37;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@File Grouping table
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_filefolder.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_filefolder.sql...' from rdb$database;
+
+
+CREATE TABLE tbl_filefolder (
+  int_folderid INTEGER NOT NULL, 
+  int_childof INTEGER,
+    PRIMARY KEY(int_folderid)
+);
+CREATE GENERATOR GEN_TBL_FILEFOLDER;
+
+
+@

@@ -1,0 +1,89 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2011.06.22.01.33.25;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2009.01.22.01.21.01;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@Timesheet file
+@
+
+
+1.2
+log
+@BigInt upgrade
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_timesheet.sql'
+ * Description:
+ *
+ *
+ * $Id: tbl_timesheet.sql,v 1.1 2009/01/22 01:21:01 nweeks Exp nweeks $
+ *
+ * $Log: tbl_timesheet.sql,v $
+ * Revision 1.1  2009/01/22 01:21:01  nweeks
+ * Initial revision
+ *
+ *
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_timesheet.sql...' from rdb$database;
+
+
+CREATE TABLE tbl_timesheet (
+  INT_TIMESHEETID BIGINT NOT NULL,
+  INT_USERID BIGINT NOT NULL,
+  INT_TASKID BIGINT NOT NULL,
+  DTM_SDATE DATE,
+  DTM_STIME TIME,
+  DTM_EDATE DATE,
+  DTM_ETIME TIME,
+);
+CREATE GENERATOR GEN_TBL_TIMESHEET;
+
+
+ALTER TABLE TBL_TIMESHEET ADD FOREIGN KEY (INT_USERID) REFERENCES TBL_USER
+(INT_USERID);
+
+ALTER TABLE TBL_TIMESHEET ADD FOREIGN KEY (INT_TASKID) REFERENCES TBL_TASK
+(INT_TASKID);
+
+
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 1
+a8 1
+ * $Id: tbl_timesheet.sql,v 1.2 2008/07/01 03:22:37 nweeks Exp $
+d11 3
+d25 2
+a26 2
+  INT_USERID INTEGER NOT NULL,
+  INT_TASKID INTEGER NOT NULL,
+d35 7
+@

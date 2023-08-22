@@ -1,0 +1,78 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2011.06.22.01.29.32;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@unknown change
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_contactreps.sql'
+ * Description:
+ *
+ *
+ * $Id: tbl_contactreps.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+ *
+ * $Log: tbl_contactreps.sql,v $
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_contactreps.sql...' from rdb$database;
+
+select 'Linking DNA tbl_ ' from rdb$database;
+
+/* Contact Representatives */
+/* Contact Representatives */
+CREATE TABLE tbl_contactreps (
+  int_userid BIGINT NOT NULL,
+  int_contactid BIGINT NOT NULL,
+    PRIMARY KEY(int_userid,int_contactid),
+    FOREIGN KEY(int_userid) REFERENCES tbl_user(int_userid),
+    FOREIGN KEY(int_contactid) REFERENCES tbl_contact(int_contactid)
+    
+);
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 5
+a12 1
+ * $Id$
+a13 1
+ * $Log$
+d25 2
+a26 2
+  int_userid INTEGER NOT NULL,
+  int_contactid INTEGER NOT NULL,
+@

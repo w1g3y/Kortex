@@ -1,0 +1,51 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.07.19.14.06.37;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@Inventory Item Tag Values link table
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlnk_invitemtagvals.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlnk_invitemtagvals.sql...' from rdb$database;
+
+CREATE TABLE tlnk_invitemtagvals (
+  int_itemid INTEGER NOT NULL,
+  int_tagid INTEGER NOT NULL,
+  str_value VARCHAR(128),
+  blb_value VARCHAR(128),
+    PRIMARY KEY(int_itemid,int_tagid),
+    FOREIGN KEY(int_itemid) REFERENCES tbl_invitem(int_itemid),
+    FOREIGN KEY(int_tagid) REFERENCES tlkp_invitemtag(int_tagid)
+);
+
+@

@@ -1,0 +1,77 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2008.07.01.03.17.56;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2008.07.01.03.15.57;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@This is the skill to contact link table
+@
+
+
+1.2
+log
+@Fixed pkey
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlnk_contactskill.sql'
+ * Description:
+ *
+ *
+ * $Id: tlnk_contactskill.sql,v 1.1 2008/07/01 03:15:57 nweeks Exp nweeks $
+ *
+ * $Log: tlnk_contactskill.sql,v $
+ * Revision 1.1  2008/07/01 03:15:57  nweeks
+ * Initial revision
+ *
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlnk_contactskill.sql...' from rdb$database;
+
+
+CREATE TABLE tlnk_contactskill (
+  int_contactid INTEGER NOT NULL,
+  int_skillid INTEGER NOT NULL,
+    PRIMARY KEY(int_skillid,int_contactid),
+    FOREIGN KEY(int_skillid) REFERENCES tlkp_erpskill(int_skillid),
+    FOREIGN KEY(int_contactid) REFERENCES tbl_contact(int_contactid)
+);
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 1
+a8 1
+ * $Id: tlnk_contactskill.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+d11 3
+d27 2
+a28 2
+    PRIMARY KEY(int_contactskillid,int_contactid),
+    FOREIGN KEY(int_contactskillid) REFERENCES tlkp_erpskill(int_skillid),
+@

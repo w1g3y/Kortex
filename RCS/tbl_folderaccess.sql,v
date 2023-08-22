@@ -1,0 +1,52 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.11.05.07.12.25;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@This is the folder permissions system for Helix DM (Document Management)
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_folderaccess.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_folderaccess.sql...' from rdb$database;
+
+
+CREATE TABLE tbl_folderaccess (
+  int_folderid INTEGER NOT NULL,
+  int_roleid INTEGER NOT NULL,
+  ibl_view INTEGER,	/* Can this role even view the contents of this folder */
+  ibl_download INTEGER,  /* Download access */
+  ibl_upload INTEGER,  ?8 Upload Access */
+    PRIMARY KEY(int_folderid),
+    FOREIGN KEY(int_roleid) REFERENCES tbl_role(int_roleid)
+);
+@

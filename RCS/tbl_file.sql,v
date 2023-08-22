@@ -1,0 +1,116 @@
+head	1.3;
+access;
+symbols;
+locks
+	nweeks:1.3; strict;
+comment	@# @;
+
+
+1.3
+date	2011.06.22.01.31.57;	author nweeks;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2008.07.01.03.22.37;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@made changes to global file repo
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_file.sql'
+ * Description:
+ *
+ *
+ * $Id: tbl_file.sql,v 1.2 2008/07/01 03:22:37 nweeks Exp $
+ *
+ * $Log: tbl_file.sql,v $
+ * Revision 1.2  2008/07/01 03:22:37  nweeks
+ * General Checkin
+ *
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_file.sql...' from rdb$database;
+
+select 'Linking DNA tbl_file ' from rdb$database;
+
+CREATE TABLE tbl_file (
+  int_fileid BIGINT NOT NULL, 
+  str_filetype VARCHAR(16) default 'JPEG Image' NOT NULL,
+  str_filename VARCHAR(128),
+  str_ext VARCHAR(8),	/* Extension of the file */
+  str_name VARCHAR(256),
+  str_notes VARCHAR(2048),
+  int_modtime INTEGER,
+  str_md5 VARCHAR(40),
+  str_sha256 VARCHAR(64),
+  str_usedby VARCHAR(16),  /* MailFile, WebFile, etc */
+  int_userid BIGINT,	/* Refer's to tbl_user */
+  int_order INTEGER default 0 NOT NULL,
+  int_accessed INTEGER default 0,
+    PRIMARY KEY(int_fileid),
+    FOREIGN KEY(int_userid) REFERENCES tbl_user(int_userid)
+);
+CREATE GENERATOR GEN_TBL_FILE;
+CREATE INDEX IND_FILE_MD5 on tbl_file(str_md5);
+CREATE INDEX IND_FILE_SHA256 on tbl_file(str_sha256);
+CREATE INDEX IND_FILE_FILENAME on tbl_file(str_filename);
+CREATE INDEX IND_FILE_EXT on tbl_file(str_ext);
+
+
+@
+
+
+1.2
+log
+@General Checkin
+@
+text
+@d8 1
+a8 1
+ * $Id: tbl_file.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+d11 3
+d26 1
+a26 1
+  int_fileid INTEGER NOT NULL, 
+d36 1
+a36 1
+  int_userid INTEGER,	/* Refer's to tbl_user */
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 5
+a12 1
+ * $Id$
+a13 1
+ * $Log$
+d33 5
+a37 1
+    PRIMARY KEY(int_fileid)
+@

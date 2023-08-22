@@ -1,0 +1,85 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2011.06.22.01.31.57;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Mail account changes
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_mailaccount.sql'
+ * Description:
+ *
+ *
+ * $Id: tbl_mailaccount.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+ *
+ * $Log: tbl_mailaccount.sql,v $
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_mailaccount.sql...' from rdb$database;
+
+select 'Linking DNA tbl_mailaccount' from rdb$database;
+
+
+/* tbl_message relies upon tbl_user for message ownership
+*/
+CREATE TABLE tbl_mailaccount (
+  int_accountid BIGINT NOT NULL, 
+  int_userid BIGINT NOT NULL,
+  str_name VARCHAR(256),
+    PRIMARY KEY(int_accountid),
+    FOREIGN KEY(int_tagid) REFERENCES tbl_mailaccounttag(int_tagid),
+    FOREIGN KEY(int_userid) REFERENCES tbl_user(int_userid)
+);
+CREATE GENERATOR GEN_TBL_MESSAGE;
+CREATE ASC INDEX AIND_MESSAGE_SUBJECT on tbl_message (str_upsubject);
+CREATE DESC INDEX DIND_MESSAGE_SUBJECT on tbl_message (str_upsubject);
+CREATE ASC INDEX AIND_MESSAGE_STAMP on tbl_message (dtm_stamp);
+CREATE DESC INDEX DIND_MESSAGE_STAMP on tbl_message (dtm_stamp);
+
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 5
+a12 1
+ * $Id$
+a13 1
+ * $Log$
+d26 2
+a27 2
+  int_accountid INTEGER NOT NULL, 
+  int_userid INTEGER NOT NULL,
+@

@@ -1,0 +1,63 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2012.06.14.03.11.39;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@Cron scheduler for Helix Systems
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_crontab.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_crontab.sql...' from rdb$database;
+
+/* --------------
+ * System :: CronTab Table
+ *
+ * Used for scheduling system tasks, events, etc
+ * --------------
+ */
+
+
+CREATE TABLE tbl_crontab (
+  int_crontabid BIGINT NOT NULL,
+  str_minute VARCHAR(8),
+  str_hour VARCHAR(8),
+  str_dayofweek VARCHAR(8),
+  str_dayofmonth VARCHAR(8),
+  str_monthofyear VARCHAR(8),
+    PRIMARY KEY(int_crontabid)
+);
+CREATE GENERATOR GEN_TBL_CRONTAB;
+
+
+
+ 
+@

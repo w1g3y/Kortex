@@ -1,0 +1,118 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2008.07.01.03.22.37;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.08.31.07.01.18;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@This is the priority system for tasks and schedules
+@
+
+
+1.2
+log
+@Task Priority Table
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_priority.sql'
+ * Description:
+ *
+ *
+ * $Id: tlkp_priority.sql,v 1.1 2007/08/31 07:01:18 nweeks Exp $
+ *
+ * $Log: tlkp_priority.sql,v $
+ * Revision 1.1  2007/08/31 07:01:18  nweeks
+ * Initial revision
+ *
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_priority.sql...' from rdb$database;
+
+
+CREATE TABLE tlkp_priority (
+  int_priorityid INTEGER NOT NULL,
+  str_priority VARCHAR(32) NOT NULL,
+  int_order INTEGER NOT NULL,
+  str_desc VARCHAR(200),
+    PRIMARY KEY (int_priorityid),
+    UNIQUE(str_priority)
+);
+CREATE GENERATOR GEN_TLKP_PRIORITY
+
+INSERT INTO tbl_priority (int_priorityid, str_priority, int_order,str_desc) values (gen_id(gen_tlkp_priority,1),'Production Critical',0,'This wi
+ll stop Production if not remedied');
+INSERT INTO tbl_priority (int_priorityid, str_priority, int_order,str_desc) values (gen_id(gen_tlkp_priority,1),'Revenue Threat',10,'Income Reve
+nue is threatened by this fault');
+INSERT INTO tbl_priority (int_priorityid, str_priority, int_order,str_desc) values (gen_id(gen_tlkp_priority,1),'Department Productivity ',30,'T
+his affects an entire department');
+INSERT INTO tbl_priority (int_priorityid, str_priority, int_order,str_desc) values (gen_id(gen_tlkp_priority,1),'Personal Productivity',40,'This
+ affects less than 3 people');
+INSERT INTO tbl_priority (int_priorityid, str_priority, int_order,str_desc) values (gen_id(gen_tlkp_priority,1),'Important',60,'To be done next'
+);
+INSERT INTO tbl_priority (str_priority, int_order,str_desc) values (gen_id(gen_tlkp_priority,1),'Desired',80,'To be done soon');
+INSERT INTO tbl_priority (str_priority, int_order,str_desc) values (gen_id(gen_tlkp_priority,1),'Planning',100,'If things are quiet');
+INSERT INTO tbl_priority (str_priority, int_order,str_desc) values (gen_id(gen_tlkp_priority,1),'Lowest',200,'To be done wheneve
+r');
+
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 1
+a8 1
+ * $Id: tlkp_priority.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+d11 3
+d23 3
+a25 2
+  str_name VARCHAR(32) NOT NULL,
+  int_priority INTEGER NOT NULL,
+d27 2
+a28 1
+    PRIMARY KEY (str_name)
+d30 1
+d32 1
+a32 1
+INSERT INTO tbl_priority (str_name, int_priority,str_desc) values ('Production Critical',0,'This wi
+d34 1
+a34 1
+INSERT INTO tbl_priority (str_name, int_priority,str_desc) values ('Revenue Threat',10,'Income Reve
+d36 1
+a36 1
+INSERT INTO tbl_priority (str_name, int_priority,str_desc) values ('Department Productivity ',30,'T
+d38 1
+a38 1
+INSERT INTO tbl_priority (str_name, int_priority,str_desc) values ('Personal Productivity',40,'This
+d40 1
+a40 1
+INSERT INTO tbl_priority (str_name, int_priority,str_desc) values ('Important',60,'To be done next'
+d42 3
+a44 4
+INSERT INTO tbl_priority (str_name, int_priority,str_desc) values ('Desired',80,'To be done soon');
+INSERT INTO tbl_priority (str_name, int_priority,str_desc) values ('Planning',100,'If things are qu
+iet');
+INSERT INTO tbl_priority (str_name, int_priority,str_desc) values ('Lowest',200,'To be done wheneve
+@

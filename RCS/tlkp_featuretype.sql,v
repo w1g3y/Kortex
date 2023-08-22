@@ -1,0 +1,50 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_featuretype.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_featuretype.sql...' from rdb$database;
+
+select 'Linking DNA tbl_ ' from rdb$database;
+
+CREATE TABLE tlkp_featuretype (
+  int_featuretypeid INTEGER NOT NULL,
+  str_featuretype VARCHAR(100) NOT NULL,
+    PRIMARY KEY(int_featuretypeid),
+    UNIQUE(str_featuretype)
+);
+CREATE GENERATOR GEN_TLKP_FEATURETYPE;
+
+@

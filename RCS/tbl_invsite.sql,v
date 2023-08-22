@@ -1,0 +1,63 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_invsite.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_invsite.sql...' from rdb$database;
+
+/* --------------
+ * Inventory :: Site table
+ *
+ * Where stock items are actually stored
+ * --------------
+ */
+
+select 'Linking DNA tbl_invsite' from rdb$database;
+
+CREATE TABLE tbl_invsite (
+  int_sitedid INTEGER NOT NULL,
+  str_name VARCHAR(64) NOT NULL,
+  str_desc VARCHAR(512),
+  str_address VARCHAR(32),
+  str_city VARCHAR(32),
+  str_state VARCHAR(16),
+  str_postcode VARCHAR(8),
+  str_phoneno VARCHAR(32),
+    PRIMARY KEY(int_siteid)
+);
+CREATE GENERATOR GEN_TBL_INVSITE;
+
+ 
+@

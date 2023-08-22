@@ -1,0 +1,94 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2011.06.22.01.29.32;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@Initial asset management table
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@type:plant>componenet/level
+cost center
+branch
+type cost
+parent plant 1
+parant plant 2
+status
+report level
+twemplater code
+asset number
+location
+loczaation code
+sub-location
+serial number
+model number
+supplier
+manufacturer
+installation date
+warranty date
+P/Order no
+capital cost
+
+registration approval body
+regis. approval no
+regis. expirt date
+
+integration link item code
+integ. parent project
+Integ. work center.
+
+Usage units / usage UOM
+Production UOM
+Weekly average
+
+Component Tracking
+Track serial No#
+Exected Life
+Warranty Life
+
+Failure details
+Target MTBF
+Actual MTBF
+Last Fail Date
+Days since fail
+Total Fai.ures
+
+Costs/Income
+Total Labour
+Total Material
+Total other
+Total income
+total
+
+
+---===Links ===---
+Work Orders
+Work Requests
+Cost History
+Attached
+Safety Notes
+Drawing Notes
+Monitor Points
+PM Tasks
+Spares List
+Defects
+Changeouts
+MPM History
+Audit
+
+@

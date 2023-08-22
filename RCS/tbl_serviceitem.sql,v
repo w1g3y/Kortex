@@ -1,0 +1,59 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_serviceitem.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_serviceitem.sql...' from rdb$database;
+
+/* ==============
+ * Service Items
+ * Advertising packages, etc
+ *
+ * ==============
+ */
+
+select 'Linking DNA tbl_serviceitem' from rdb$database;
+
+CREATE TABLE tbl_serviceitem(
+  int_servitemid INTEGER NOT NULL,
+  str_name VARCHAR(128) NOT NULL,
+  str_desc VARCHAR(512),
+  flt_price NUMERIC(18,3),
+    PRIMARY KEY(int_servitemid)
+);
+
+CREATE GENERATOR GEN_TBL_SERVICEITEM;
+
+@

@@ -1,0 +1,84 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2007.09.12.21.01.34;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@removed recursive structure, and added groups and ordering.
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_invcategory.sql'
+ * Description:
+ *
+ *
+ * $Id: tlkp_invcategory.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+ *
+ * $Log: tlkp_invcategory.sql,v $
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_invcategory.sql...' from rdb$database;
+
+/* --------------
+ * Inventory :: Item Categories
+ *
+ * The grouping of similar items
+ * --------------
+ */
+select 'Linking DNA tbl_invcategory' from rdb$database;
+
+
+CREATE TABLE tlkp_invcategory (
+  int_catid INTEGER NOT NULL,
+  str_catgroup VARCHAR(32),
+  str_name VARCHAR(32),
+  str_desc VARCHAR(128),
+  int_order INTEGER default 0,
+    PRIMARY KEY(int_catid),
+    FOREIGN KEY(int_childof) REFERENCES tlkp_invcategory (int_catid)
+);
+CREATE GENERATOR GEN_TLKP_INVCATEGORY;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 5
+a12 1
+ * $Id$
+a13 1
+ * $Log$
+d31 1
+a31 1
+  int_childof INTEGER,
+d34 1
+@

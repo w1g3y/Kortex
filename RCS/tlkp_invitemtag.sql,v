@@ -1,0 +1,52 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.07.19.14.06.37;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@Removed int_owner, and added int_manufacturer
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_invitemtag.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_invitemtag.sql...' from rdb$database;
+
+CREATE TABLE tlkp_invitemtag (
+  int_tagid INTEGER NOT NULL,
+  str_name VARCHAR(32) NOT NULL,
+  str_group VARCHAR(32),
+  str_desc VARCHAR(256),
+  int_order INTEGER default 0,
+    PRIMARY KEY(int_tagid),
+    UNIQUE (str_name)
+);
+CREATE GENERATOR GEN_TLKP_INVITEMTAG;
+
+@

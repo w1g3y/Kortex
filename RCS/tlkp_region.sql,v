@@ -1,0 +1,54 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.09.02.08.15.50;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@This is the region entity.
+Differs from locality in it's coverage - north of tas covers many localities
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_region.sql'
+ * Description:
+ *
+ *
+ * $Id: tlkp_region.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+ *
+ * $Log: tlkp_region.sql,v $
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_region.sql...' from rdb$database;
+
+
+CREATE TABLE tlkp_region (
+  int_regionid INTEGER NOT NULL,
+  str_region VARCHAR(64),
+  str_state VARCHAR(32),
+    PRIMARY KEY(int_regionid),
+    UNIQUE(str_region,str_state)
+);
+CREATE GENERATOR GEN_TLKP_REGION;
+
+
+@

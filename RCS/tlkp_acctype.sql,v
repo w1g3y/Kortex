@@ -1,0 +1,59 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2008.07.01.03.22.37;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@General Ledger Account Types
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_acctype.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_acctype.sql...' from rdb$database;
+
+
+CREATE TABLE tlkp_acctype (
+  int_acctypeid INTEGER NOT NULL,
+  str_acctype VARCHAR(64),
+  str_desc VARCHAR(256),
+  int_order INTEGER,
+    PRIMARY KEY(int_acctypeid),
+    UNIQUE(str_acctype)
+);
+CREATE GENERATOR GEN_TLKP_ACCTYPE;
+INSERT INTO tlkp_acctype (int_acctypeid,str_acctype,int_order) VALUES (gen_id(gen_tlkp_acctype,1),'Asset',10);
+INSERT INTO tlkp_acctype (int_acctypeid,str_acctype,int_order) VALUES (gen_id(gen_tlkp_acctype,1),'Liability',20);
+INSERT INTO tlkp_acctype (int_acctypeid,str_acctype,int_order) VALUES (gen_id(gen_tlkp_acctype,1),'Income',30);
+INSERT INTO tlkp_acctype (int_acctypeid,str_acctype,int_order) VALUES (gen_id(gen_tlkp_acctype,1),'Expense',40);
+INSERT INTO tlkp_acctype (int_acctypeid,str_acctype,int_order) VALUES (gen_id(gen_tlkp_acctype,1),'Header - non posting account',50);
+INSERT INTO tlkp_acctype (int_acctypeid,str_acctype,int_order) VALUES (gen_id(gen_tlkp_acctype,1),'Sandbox Point - non posting account',60);
+@

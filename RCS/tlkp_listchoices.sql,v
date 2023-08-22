@@ -1,0 +1,104 @@
+head	1.3;
+access;
+symbols;
+locks
+	nweeks:1.3; strict;
+comment	@# @;
+
+
+1.3
+date	2012.11.29.23.41.21;	author nweeks;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2012.02.17.05.28.04;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2012.02.17.05.24.34;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@Table for handling choices and options in the application
+@
+
+
+1.3
+log
+@This is the ListChoices, replacing the Tag system.
+@
+text
+@/* =================================================
+ *
+ * Entity Name: 'tlkp_listchoices.sql'
+ * Description: Provides grouped and Ordered options for select
+ *   menus and application choices
+ *
+ *
+ * $Id: tlkp_listchoices.sql,v 1.2 2012/02/17 05:28:04 nweeks Exp nweeks $
+ *
+ * $Log: tlkp_listchoices.sql,v $
+ * Revision 1.2  2012/02/17 05:28:04  nweeks
+ * Fixed line before Primary Key
+ *
+ * Revision 1.1  2012/02/17 05:24:34  nweeks
+ * Initial revision
+ *
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_listchoices.sql...' from rdb$database;
+
+CREATE TABLE TLKP_LISTCHOICES (
+  int_listid BIGINT NOT NULL,
+  str_ListUsage VARCHAR(64) NOT NULL,
+  str_ListGroup VARCHAR(64) NOT NULL,
+  int_ListGroupOrder INTEGER default 1,
+  str_ListName VARCHAR(64),
+  str_ListDesc VARCHAR(256),
+  str_Comment VARCHAR(2048),
+    PRIMARY KEY(int_listid)
+);
+CREATE GENERATOR GEN_TLKP_LISTCHOICES;
+
+@
+
+
+1.2
+log
+@Fixed line before Primary Key
+@
+text
+@d8 1
+a8 1
+ * $Id: tlkp_listchoices.sql,v 1.1 2012/02/17 05:24:34 nweeks Exp nweeks $
+d11 3
+d25 1
+a25 1
+  int_LISTID BIGINT NOT NULL,
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 5
+a12 1
+ * $Id$
+a13 1
+ * $Log$
+a20 2
+select 'Linking DNA tlkp_listchoices.sql' from rdb$database;
+
+d28 1
+a28 1
+  str_Comment VARCHAR(2048)
+@

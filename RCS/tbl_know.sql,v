@@ -1,0 +1,93 @@
+head	1.2;
+access;
+symbols;
+locks
+	nweeks:1.2; strict;
+comment	@# @;
+
+
+1.2
+date	2011.06.22.01.31.57;	author nweeks;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Knowledgebase system changes
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tbl_know.sql'
+ * Description:
+ *
+ *
+ * $Id: tbl_know.sql,v 1.1 2007/05/21 06:38:24 nweeks Exp $
+ *
+ * $Log: tbl_know.sql,v $
+ * Revision 1.1  2007/05/21 06:38:24  nweeks
+ * Initial revision
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tbl_know.sql...' from rdb$database;
+
+CREATE TABLE tbl_know (
+  int_versionid BIGINT NOT NULL,
+  int_knowid BIGINT NOT NULL,
+  int_childof BIGINT, /* Is this a child of another entry? */
+  str_keywords VARCHAR(500),
+  int_order INTEGER default 0, /* Order of items in this section */
+  str_name VARCHAR(100) NOT NULL,
+  str_title VARCHAR(200),
+  blb_data BLOB SUB_TYPE TEXT,
+    PRIMARY KEY(int_versionid)
+);
+CREATE GENERATOR GEN_tbl_know;
+CREATE GENERATOR GEN_tbl_knowvers;
+
+
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 5
+a12 1
+ * $Id$
+a13 1
+ * $Log$
+d21 3
+a23 2
+  int_knowid NUMERIC(18,0) NOT NULL,
+  int_childof NUMERIC(18,0), /* Is this a child of another entry? */
+a25 7
+    PRIMARY KEY(int_knowid)
+);
+CREATE GENERATOR GEN_tbl_know;
+
+CREATE TABLE tbl_knowdata (
+  int_knowid NUMERIC(18,0) NOT NULL,
+  str_lang VARCHAR(3) default 'EN' NOT NULL,
+d29 1
+a29 1
+    PRIMARY KEY(int_knowid, str_lang)
+d31 3
+@

@@ -1,0 +1,50 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2007.05.21.06.38.24;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_contacttype.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_contacttype.sql...' from rdb$database;
+
+select 'Linking DNA tbl_ ' from rdb$database;
+
+CREATE TABLE tlkp_contacttype (
+  int_contacttypeid INTEGER NOT NULL,
+  str_contacttype VARCHAR(50) NOT NULL,
+    PRIMARY KEY(int_contacttypeid),
+    UNIQUE(str_contacttype)
+);
+CREATE GENERATOR GEN_TLKP_CONTACTTYPE;
+
+@

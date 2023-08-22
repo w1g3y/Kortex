@@ -1,0 +1,82 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2008.09.09.01.04.34;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@/*
+Transaction Tax Calculation Trigger
+*/
+
+SET TERM !! ;
+CREATE TRIGGER TRG_TRANSACTION_TAX FOR tbl_transaction
+active 
+before insert or update 
+position 0
+AS 
+  DECLARE VARIABLE i_inctoexmult NUMERIC(18,8);
+  DECLARE VARIABLE i_extoincmult NUMERIC(18,8);
+  DECLARE VARIABLE i_calc NUMERIC(18,4);
+  BEGIN
+  /*
+   * Firstly test to see if we have newly supplied TAX information
+   */
+  if ( NEW.str_taxtype is not null
+  AND  NEW.str_taxtype != '') THEN
+  BEGIN
+    /* Go get the multiplication factors from tlkp_tax */
+    SELECT flt_inctoexmult, flt_extoincmult from tlkp_tax
+    WHERE str_taxtype = NEW.str_taxtype
+    INTO :i_inctoexmult, :i_extoincmult;
+
+
+    if ( NEW.str_taxiefc is not null
+    AND NEW.str_taxiefc IN ('i','e','f','c')) THEN
+    BEGIN
+      /* We have a valid tax component */
+      if ( NEW.str_taxiefc = 'i' ) then
+      BEGIN
+        /* All Values are stored with seperate tax components.
+         * Seperate the tax from the flt_amount, and write it
+         * into the flt_taxamt field
+         */
+        /* Working out the tax component */
+        i_calc = NEW.flt_amount * :i_inctoexmult;
+       
+        /* Remove the tax amount from the flt_amount */
+        NEW.flt_amount = (NEW.flt_amount - :i_calc);
+
+        /* Set the tax amount */
+        NEW.flt_taxamt = :i_calc;
+
+      END
+
+    END
+
+  END
+
+
+END
+ !!
+SET TERM ; !!
+commit;
+
+
+@

@@ -1,0 +1,54 @@
+head	1.1;
+access;
+symbols;
+locks
+	nweeks:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2008.07.01.03.07.42;	author nweeks;	state Exp;
+branches;
+next	;
+
+
+desc
+@Skills register for the ERP extensions
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@
+/* =================================================
+ *
+ * Entity Name: 'tlkp_erpskill.sql'
+ * Description:
+ *
+ *
+ * $Id$
+ *
+ * $Log$
+ *
+ *
+ *
+ * ================================================= 
+ */
+
+select 'Linking DNA tlkp_erpskill.sql...' from rdb$database;
+
+
+CREATE TABLE tlkp_erpskill (
+  int_skillid INTEGER NOT NULL,
+  str_skillgroup VARCHAR(64),
+  str_skill VARCHAR(64),
+  str_desc VARCHAR(256),
+  int_order INTEGER,
+    PRIMARY KEY(int_skillid),
+    UNIQUE(str_skillgroup, str_skill)
+);
+CREATE GENERATOR GEN_TLKP_erpskill;
+@
